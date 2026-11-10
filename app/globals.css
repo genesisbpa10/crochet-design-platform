@@ -1,26 +1,364 @@
 @import "tailwindcss";
 
+/* Paleta y estética de los prototipos de pantalla del TFG (Figuras 10 a 16). */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --fondo: #fbefdc;
+  --tarjeta: #fff8ea;
+  --tinta: #3b2a1a;
+  --oliva: #6b7a2a;
+  --terracota: #d9622b;
+  --mostaza: #e3a81f;
+  --arena: #ebd9b4;
+  --gris: #6b6258;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html,
+body {
+  background: var(--fondo);
+  color: var(--tinta);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.serif {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+/* Encabezado */
+.encabezado {
+  background: var(--oliva);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding: 0.75rem 1.5rem;
+}
+.marca {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--tarjeta);
+}
+.navegacion {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  flex: 1;
+}
+.navegacion a {
+  color: var(--tarjeta);
+  padding: 0.35rem 1rem;
+  border-radius: 999px;
+  text-decoration: none;
+}
+.navegacion a[aria-current="page"] {
+  background: var(--terracota);
+  font-weight: 700;
+}
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.chip {
+  background: var(--tarjeta);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.franja {
+  display: flex;
+  height: 6px;
+}
+.franja i {
+  flex: 1;
+}
+.franja i:nth-child(1) {
+  background: var(--terracota);
+}
+.franja i:nth-child(2) {
+  background: var(--mostaza);
+}
+.franja i:nth-child(3) {
+  background: var(--tinta);
+}
+
+/* Estructura */
+.pagina {
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.pagina h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+.columnas {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+@media (min-width: 900px) {
+  .columnas-2 {
+    grid-template-columns: minmax(280px, 1fr) minmax(0, 1.4fr);
+  }
+  .columnas-3 {
+    grid-template-columns: minmax(240px, 1fr) minmax(260px, 1fr) minmax(280px, 1fr);
   }
 }
+.pila {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Tarjetas */
+.tarjeta {
+  background: var(--tarjeta);
+  border: 2px solid var(--tinta);
+  border-radius: 22px;
+  padding: 0.9rem 1.25rem 1.1rem;
+}
+.tarjeta h2 {
+  color: var(--oliva);
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.tarjeta-centrada {
+  max-width: 440px;
+  margin: 3rem auto;
+}
+.tarjeta-centrada h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.6rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Formularios */
+label,
+.etiqueta {
+  display: block;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--oliva);
+  margin: 0.7rem 0 0.25rem;
+}
+.campo,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  background: #fff;
+  border: 2px solid var(--tinta);
+  border-radius: 16px;
+  padding: 0.5rem 0.9rem;
+  font-size: 1rem;
+  color: var(--tinta);
+}
+textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+input[type="number"].corto {
+  width: 5.5rem;
+}
+input[type="radio"] {
+  accent-color: var(--terracota);
+}
+.opcion {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 400;
+  color: var(--tinta);
+  font-size: 1rem;
+  margin: 0.25rem 0;
+}
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ayuda {
+  color: var(--gris);
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+}
+.error {
+  border: 2px solid var(--terracota);
+  border-radius: 14px;
+  background: #fff;
+  padding: 0.5rem 0.9rem;
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+}
+.exito {
+  border: 2px solid var(--oliva);
+  border-radius: 14px;
+  background: #fff;
+  padding: 0.5rem 0.9rem;
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+}
+
+/* Botones */
+.boton {
+  display: inline-block;
+  border: 2px solid var(--tinta);
+  border-radius: 999px;
+  padding: 0.5rem 1.4rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--tinta);
+  background: var(--mostaza);
+}
+.boton-principal {
+  background: var(--terracota);
+  color: var(--tarjeta);
+}
+.boton-activo {
+  background: var(--terracota);
+  color: var(--tarjeta);
+}
+.boton-claro {
+  background: var(--tarjeta);
+  color: var(--tinta);
+  padding: 0.25rem 0.9rem;
+  font-size: 0.85rem;
+}
+.boton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.boton:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--terracota);
+  outline-offset: 2px;
+}
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.enlace {
+  color: var(--oliva);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+th {
+  background: var(--arena);
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+}
+td {
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--arena);
+}
+.num {
+  text-align: right;
+}
+.total td {
+  font-weight: 700;
+}
+.tabla-scroll {
+  overflow-x: auto;
+}
+tr.seleccionada td {
+  background: #fff;
+  border-top: 2px solid var(--terracota);
+  border-bottom: 2px solid var(--terracota);
+}
+
+/* Estados */
+.insignia {
+  display: inline-block;
+  background: var(--mostaza);
+  border: 2px solid var(--tinta);
+  border-radius: 999px;
+  padding: 0 0.6rem;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* Colores y lienzo */
+.punto-color {
+  display: inline-block;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  border: 2px solid var(--tinta);
+  vertical-align: middle;
+  margin-right: 0.45rem;
+}
+.paleta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.muestra {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  padding: 0.2rem 0.7rem 0.2rem 0.4rem;
+  cursor: pointer;
+  color: var(--tinta);
+  font-size: 0.95rem;
+}
+.muestra[aria-pressed="true"] {
+  border-color: var(--terracota);
+}
+.lienzo {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 3px solid var(--tinta);
+  border-radius: 6px;
+  touch-action: none;
+  cursor: crosshair;
+  background: var(--tarjeta);
+}
+.lienzo-lectura {
+  cursor: default;
+}
+.miniatura-lista {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.6rem;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--tinta);
+}
+.miniatura-lista[aria-current="true"] {
+  border-color: var(--terracota);
+}
+.vacio {
+  color: var(--gris);
+  padding: 0.5rem 0;
 }

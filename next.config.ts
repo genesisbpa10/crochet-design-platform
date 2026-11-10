@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Módulo nativo (Argon2id): se carga desde node_modules en el servidor.
+  serverExternalPackages: ["@node-rs/argon2"],
 };
 
 export default nextConfig;
