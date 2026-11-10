@@ -8,7 +8,10 @@ const ENLACES: Record<Rol, EnlaceNavegacion[]> = {
     { href: "/enviar", texto: "Enviar propuesta" },
     { href: "/mis-propuestas", texto: "Mis propuestas" },
   ],
-  [ROLES.ARTESANA]: [{ href: "/recibidas", texto: "Propuestas recibidas" }],
+  [ROLES.ARTESANA]: [
+    { href: "/recibidas", texto: "Propuestas recibidas" },
+    { href: "/analitica", texto: "Analítica de pedidos" },
+  ],
 };
 
 export function Encabezado({ rol, nombre }: { rol: Rol; nombre: string }) {

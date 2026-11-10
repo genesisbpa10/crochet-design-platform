@@ -112,6 +112,34 @@ body {
     grid-template-columns: minmax(240px, 1fr) minmax(260px, 1fr) minmax(280px, 1fr);
   }
 }
+.columnas-iguales {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .columnas-iguales {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.barra-fila {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr 2rem;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.4rem 0;
+}
+.barra-fila strong {
+  text-align: right;
+}
+.barra-fondo {
+  background: var(--arena);
+  border-radius: 999px;
+  height: 1.4rem;
+  overflow: hidden;
+}
+.barra {
+  height: 100%;
+  border-radius: 999px;
+}
 .pila {
   display: flex;
   flex-direction: column;
