@@ -5,7 +5,7 @@
 
 La aplicación se llama **Laboratorio de crochet**. Permite que un cliente diseñe un motivo de tapestry crochet en una grilla, obtenga al instante los puntos y los metros de hilo, y envíe una propuesta de prenda. La artesana evalúa la factibilidad, registra los ajustes y carga el presupuesto.
 
-Este repositorio contiene el código del prototipo, que implementa aproximadamente el 70 % del sistema descrito en el documento. Las pantallas siguen las Figuras 10 a 17 y el modelo de datos sigue el DER de la Figura 9.
+Este repositorio contiene el código del prototipo. Las pantallas siguen las Figuras 10 a 17 y el modelo de datos sigue el DER de la Figura 9.
 
 ## Qué incluye
 
@@ -20,15 +20,6 @@ Este repositorio contiene el código del prototipo, que implementa aproximadamen
 | Analítica de pedidos: propuestas por estado, promedios y colores más usados | Figura 17 |
 
 Las propuestas pasan por los estados **Enviada → Evaluada → Presupuestada**. La cuenta de la artesana no se registra desde la pantalla: la crea el responsable técnico con el comando `npm run db:seed`.
-
-## Qué queda fuera del prototipo
-
-Para llegar al 70 % se dejaron como trabajo pendiente:
-
-- El **bloqueo de la cuenta tras 5 intentos fallidos** durante 15 minutos. La pantalla de inicio de sesión muestra el aviso de la Figura 10, pero el bloqueo todavía no se aplica.
-- La **expiración de la sesión por inactividad**. En el prototipo la sesión dura 8 horas.
-- La **lista completa de contraseñas filtradas**. El prototipo usa una lista corta de contraseñas comunes.
-- Las **copias de seguridad y los snapshots** descritos en el documento.
 
 ## Tecnologías y relación con el documento
 
