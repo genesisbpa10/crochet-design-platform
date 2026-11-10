@@ -12,10 +12,10 @@ datasource db {
 
 model Usuario {
   idUsuario      Int          @id @default(autoincrement()) @map("id_usuario")
-  nombre         String
-  correo         String       @unique
-  contrasenaHash String       @map("contrasena_hash")
-  rol            String
+  nombre         String @db.VarChar(100)
+  correo         String @db.VarChar(254)       @unique
+  contrasenaHash String       @map("contrasena_hash") @db.VarChar(255)
+  rol            String @db.VarChar(20)
   motivos        Motivo[]
   propuestas     Propuesta[]
   evaluaciones   Evaluacion[]
@@ -26,7 +26,7 @@ model Usuario {
 model Motivo {
   idMotivo          Int           @id @default(autoincrement()) @map("id_motivo")
   idUsuario         Int           @map("id_usuario")
-  nombre            String
+  nombre            String @db.VarChar(80)
   ancho             Int
   alto              Int
   grilla            Json
@@ -43,8 +43,8 @@ model Motivo {
 model ColorMotivo {
   idColor    Int            @id @default(autoincrement()) @map("id_color")
   idMotivo   Int            @map("id_motivo")
-  nombre     String
-  codigoHex  String         @map("codigo_hex")
+  nombre     String @db.VarChar(40)
+  codigoHex  String         @map("codigo_hex") @db.VarChar(7)
   motivo     Motivo         @relation(fields: [idMotivo], references: [idMotivo], onDelete: Cascade)
   detalles   DetalleColor[]
 
@@ -57,7 +57,7 @@ model Propuesta {
   idMotivo    Int            @map("id_motivo")
   idCliente   Int            @map("id_cliente")
   descripcion String
-  estado      String
+  estado      String @db.VarChar(20)
   totalPuntos Int            @map("total_puntos")
   fechaEnvio  DateTime       @default(now()) @map("fecha_envio")
   motivo      Motivo         @relation(fields: [idMotivo], references: [idMotivo])
@@ -99,7 +99,7 @@ model Evaluacion {
   idEvaluacion  Int       @id @default(autoincrement()) @map("id_evaluacion")
   idPropuesta   Int       @unique @map("id_propuesta")
   idArtesana    Int       @map("id_artesana")
-  resultado     String
+  resultado     String @db.VarChar(30)
   observaciones String?
   fecha         DateTime  @default(now())
   propuesta     Propuesta @relation(fields: [idPropuesta], references: [idPropuesta], onDelete: Cascade)
