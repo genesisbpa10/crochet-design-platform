@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { exigirUsuario } from "@/lib/auth/guard";
 import { ROLES } from "@/lib/dominio";
@@ -24,41 +23,29 @@ export default async function PaginaEvaluacion({
   if (!propuesta) notFound();
 
   return (
-    <>
-      <h1>Propuesta N.º {propuesta.idPropuesta}</h1>
-      <p className="ayuda" style={{ marginTop: "-0.5rem", marginBottom: "1rem" }}>
-        Cliente: {propuesta.cliente} · Motivo: {propuesta.motivo.nombre} ·{" "}
-        <span className="insignia">{propuesta.estado}</span>
-      </p>
-
-      <div className="columnas columnas-3">
-        <div className="pila">
-          <VistaGrilla
-            grilla={propuesta.motivo.grilla}
-            maximo={280}
-            descripcion={`Grilla del motivo ${propuesta.motivo.nombre}`}
-          />
-          <section className="tarjeta" aria-label="Descripción del cliente">
-            <h2>Descripción del cliente</h2>
-            <p style={{ whiteSpace: "pre-wrap" }}>{propuesta.descripcion}</p>
-          </section>
-        </div>
-
-        <TablaDatos datos={propuesta.datos} />
-
-        <div className="pila">
-          {propuesta.evaluacion ? (
-            <ResultadoEvaluacion evaluacion={propuesta.evaluacion} />
-          ) : (
-            <FormularioEvaluacion idPropuesta={propuesta.idPropuesta} />
-          )}
-          <div>
-            <Link href="/recibidas" className="boton">
-              Volver al listado
-            </Link>
-          </div>
-        </div>
+    <div className="columnas columnas-3">
+      <div className="pila">
+        <h1 style={{ marginBottom: 0 }}>Propuesta N.º {propuesta.idPropuesta}</h1>
+        <VistaGrilla
+          grilla={propuesta.motivo.grilla}
+          maximo={280}
+          descripcion={`Grilla del motivo ${propuesta.motivo.nombre}`}
+        />
+        <section className="tarjeta" aria-label="Descripción del cliente">
+          <h2>Descripción del cliente</h2>
+          <p style={{ whiteSpace: "pre-wrap" }}>{propuesta.descripcion}</p>
+        </section>
       </div>
-    </>
+
+      <TablaDatos datos={propuesta.datos} />
+
+      {propuesta.evaluacion ? (
+        <div className="pila">
+          <ResultadoEvaluacion evaluacion={propuesta.evaluacion} />
+        </div>
+      ) : (
+        <FormularioEvaluacion idPropuesta={propuesta.idPropuesta} />
+      )}
+    </div>
   );
 }

@@ -11,11 +11,9 @@ export function FormularioEnvio({ idMotivo }: { idMotivo: number }) {
       <input type="hidden" name="idMotivo" value={idMotivo} />
       <section className="tarjeta" aria-label="Descripción de la prenda deseada">
         <h2>3. Descripción de la prenda deseada</h2>
-        <label htmlFor="descripcion">
-          Tipo de prenda o accesorio, medidas y uso
-        </label>
         <textarea
           id="descripcion"
+          aria-label="Descripción de la prenda deseada"
           name="descripcion"
           maxLength={2000}
           required

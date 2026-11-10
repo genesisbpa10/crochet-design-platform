@@ -17,16 +17,16 @@ export function Encabezado({ rol, nombre }: { rol: Rol; nombre: string }) {
       <div className="encabezado">
         <span className="marca">Laboratorio de crochet</span>
         <NavegacionPrincipal enlaces={ENLACES[rol]} />
-        <div className="usuario">
-          <span className="chip" title={nombre}>
+        <form action={cerrarSesionAccion} className="usuario">
+          <button
+            type="submit"
+            className="chip"
+            title={`${nombre} · Cerrar sesión`}
+            aria-label={`${ETIQUETA_ROL[rol]}: cerrar sesión`}
+          >
             {ETIQUETA_ROL[rol]}
-          </span>
-          <form action={cerrarSesionAccion}>
-            <button type="submit" className="boton boton-claro">
-              Cerrar sesión
-            </button>
-          </form>
-        </div>
+          </button>
+        </form>
       </div>
       <div className="franja" aria-hidden="true">
         <i />

@@ -15,7 +15,8 @@ export default async function PaginaMisPropuestas({
   const usuario = await exigirUsuario(ROLES.CLIENTE);
   const propuestas = await listarPropuestasCliente(usuario.idUsuario);
   const { id } = await searchParams;
-  const idElegido = typeof id === "string" ? Number(id) : NaN;
+  // Si no se eligió ninguna, se muestra la primera del listado (la más reciente).
+  const idElegido = typeof id === "string" ? Number(id) : (propuestas[0]?.idPropuesta ?? NaN);
   const detalle =
     Number.isInteger(idElegido) && idElegido > 0
       ? await detallePropuestaCliente(usuario.idUsuario, idElegido)
@@ -23,18 +24,22 @@ export default async function PaginaMisPropuestas({
 
   return (
     <>
-      <h1>Mis propuestas</h1>
       {propuestas.length === 0 ? (
-        <section className="tarjeta">
-          <p>Todavía no enviaste ninguna propuesta.</p>
-          <div className="acciones">
-            <Link href="/enviar" className="boton boton-principal">
-              Enviar una propuesta
-            </Link>
-          </div>
-        </section>
+        <div>
+          <h1>Mis propuestas</h1>
+          <section className="tarjeta">
+            <p>Todavía no enviaste ninguna propuesta.</p>
+            <div className="acciones">
+              <Link href="/enviar" className="boton boton-principal">
+                Enviar una propuesta
+              </Link>
+            </div>
+          </section>
+        </div>
       ) : (
         <div className="columnas columnas-2">
+          <div>
+            <h1>Mis propuestas</h1>
           <section className="tarjeta" aria-label="Listado de propuestas">
             <div className="tabla-scroll">
               <table>
@@ -68,13 +73,12 @@ export default async function PaginaMisPropuestas({
               </table>
             </div>
           </section>
+          </div>
 
           <div className="pila">
             {detalle ? (
               <>
-                <h2 className="serif" style={{ fontSize: "1.5rem" }}>
-                  Propuesta N.º {detalle.idPropuesta}
-                </h2>
+                <h2 className="titulo">Propuesta N.º {detalle.idPropuesta}</h2>
                 {detalle.evaluacion ? (
                   <ResultadoEvaluacion evaluacion={detalle.evaluacion} />
                 ) : (
@@ -84,9 +88,7 @@ export default async function PaginaMisPropuestas({
                   </section>
                 )}
               </>
-            ) : (
-              <p className="vacio">Seleccioná una propuesta para ver su resultado.</p>
-            )}
+            ) : null}
           </div>
         </div>
       )}

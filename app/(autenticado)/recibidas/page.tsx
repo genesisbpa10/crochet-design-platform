@@ -3,6 +3,7 @@ import { exigirUsuario } from "@/lib/auth/guard";
 import { ESTADOS, ROLES, type Estado } from "@/lib/dominio";
 import { formatearFecha } from "@/lib/formato";
 import { listarPropuestasRecibidas } from "@/services/propuestas";
+import { FiltroEstado } from "@/components/FiltroEstado";
 
 export const metadata = { title: "Propuestas recibidas | Laboratorio de crochet" };
 
@@ -24,24 +25,7 @@ export default async function PaginaRecibidas({
     <>
       <h1>Propuestas recibidas</h1>
 
-      <section className="tarjeta" aria-label="Filtro por estado">
-        <form method="get" className="fila">
-          <label htmlFor="estado" style={{ margin: 0 }}>
-            Filtrar por estado
-          </label>
-          <select id="estado" name="estado" defaultValue={filtro ?? ""} style={{ width: "auto" }}>
-            <option value="">Todos</option>
-            {ESTADOS.map((e) => (
-              <option key={e} value={e}>
-                {e}
-              </option>
-            ))}
-          </select>
-          <button type="submit" className="boton">
-            Filtrar
-          </button>
-        </form>
-      </section>
+      <FiltroEstado actual={filtro} />
 
       <section className="tarjeta" style={{ marginTop: "1rem" }} aria-label="Listado de propuestas">
         {propuestas.length === 0 ? (

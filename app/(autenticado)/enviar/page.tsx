@@ -41,12 +41,12 @@ export default async function PaginaEnviar({
   const datos = calcular(elegido.grilla, elegido.paleta);
 
   return (
-    <>
-      <h1>Enviar propuesta</h1>
-      <div className="columnas columnas-2">
+    <div className="columnas columnas-2">
+      <div>
+        <h1>Enviar propuesta</h1>
         <section className="tarjeta" aria-label="Elegir motivo guardado">
           <h2>1. Elegir motivo guardado</h2>
-          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+          <ul className="lista-motivos">
             {motivos.map((m) => (
               <li key={m.idMotivo}>
                 <Link
@@ -56,7 +56,7 @@ export default async function PaginaEnviar({
                 >
                   <VistaGrilla
                     grilla={m.grilla}
-                    maximo={120}
+                    maximo={160}
                     descripcion={`Vista previa del motivo ${m.nombre}`}
                   />
                   <span>
@@ -71,17 +71,15 @@ export default async function PaginaEnviar({
             ))}
           </ul>
         </section>
-
-        <div className="pila">
-          <div>
-            <h2 className="etiqueta" style={{ fontSize: "1rem", textTransform: "uppercase" }}>
-              2. Resumen del motivo seleccionado
-            </h2>
-            <TablaDatos datos={datos} />
-          </div>
-          <FormularioEnvio key={elegido.idMotivo} idMotivo={elegido.idMotivo} />
-        </div>
       </div>
-    </>
+
+      <div className="pila">
+        <section className="tarjeta" aria-label="Resumen del motivo seleccionado">
+          <h2>2. Resumen del motivo seleccionado</h2>
+          <TablaDatos datos={datos} />
+        </section>
+        <FormularioEnvio key={elegido.idMotivo} idMotivo={elegido.idMotivo} />
+      </div>
+    </div>
   );
 }

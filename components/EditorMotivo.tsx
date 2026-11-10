@@ -166,6 +166,7 @@ export function EditorMotivo({ inicial }: { inicial?: Inicial }) {
   return (
     <div className="columnas columnas-2">
       <div>
+        <h1>Diseñar motivo</h1>
         <canvas
           ref={lienzo}
           className="lienzo"

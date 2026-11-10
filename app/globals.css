@@ -60,6 +60,9 @@ body {
   gap: 0.5rem;
 }
 .chip {
+  border: 0;
+  cursor: pointer;
+  color: var(--tinta);
   background: var(--tarjeta);
   border-radius: 999px;
   padding: 0.3rem 0.9rem;
@@ -89,7 +92,8 @@ body {
   max-width: 1200px;
   margin: 0 auto;
 }
-.pagina h1 {
+.pagina h1,
+.pagina .titulo {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 1.8rem;
   margin-bottom: 1rem;
@@ -207,6 +211,43 @@ input[type="radio"] {
   padding: 0.5rem 0.9rem;
   margin-top: 0.75rem;
   font-size: 0.95rem;
+}
+
+/* Etiquetas dentro de las tarjetas de trabajo (no en los formularios de acceso) */
+.tarjeta:not(.tarjeta-centrada) label,
+.tarjeta:not(.tarjeta-centrada) .etiqueta {
+  color: var(--gris);
+}
+.aviso {
+  border: 2px solid var(--terracota);
+  border-radius: 14px;
+  background: #fff;
+  padding: 0.5rem 0.9rem;
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+}
+.campo-monto {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #fff;
+  border: 2px solid var(--tinta);
+  border-radius: 16px;
+  padding: 0.35rem 0.9rem;
+}
+.campo-monto input {
+  border: 0;
+  padding: 0;
+  width: 7rem;
+  background: transparent;
+}
+.lista-motivos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.lista-motivos li + li {
+  border-top: 1px solid var(--arena);
 }
 
 /* Botones */
