@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Claude / agentes (no subir al repositorio)
+.claude/
+agent.md
+AGENT.md
+AGENTS.md
+CLAUDE.md
+
+# secretos
+.env
+.env.*
+!.env.example
