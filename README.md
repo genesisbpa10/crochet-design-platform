@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Laboratorio de crochet
 
-## Getting Started
+Prototipo del Trabajo Final de Grado (Licenciatura en Informática): plataforma web para diseñar y gestionar propuestas de prendas de crochet personalizadas (tapestry crochet).
 
-First, run the development server:
+## Qué incluye
+
+- **Acceso:** registro del cliente e inicio de sesión de cliente y artesana. Contraseñas con Argon2id, sesión firmada y permisos por perfil verificados en el servidor.
+- **Laboratorio de diseño (CU 1 y CU 2):** grilla de 1 a 100 celdas por lado dibujada con Canvas API, paleta de colores, total de puntos, puntos por color y metros de hilo estimados. Guardar y recuperar motivos.
+- **Envío de propuestas (CU 3) y consulta del resultado (CU 4).**
+- **Artesana (CU 5 a CU 8):** listado con filtro por estado, evaluación de factibilidad, ajustes y presupuesto. Estados: Enviada, Evaluada y Presupuestada.
+
+Tecnologías: Next.js, TypeScript, Canvas API, PostgreSQL con Prisma ORM, Vercel.
+
+## Cómo ejecutarlo en forma local
+
+Requisitos: Node.js 20.9 o superior (se recomienda la versión 22), npm y una base de datos PostgreSQL (por ejemplo, un proyecto gratuito de Neon).
+
+1. Instalar las dependencias:
+
+   ```bash
+   npm install
+   ```
+
+2. Copiar `.env.example` como `.env` y completar los valores (`DATABASE_URL`, `DIRECT_URL`, `SESSION_SECRET`, `ARTESANA_EMAIL`, `ARTESANA_PASSWORD`).
+
+3. Crear las tablas y la cuenta de la artesana:
+
+   ```bash
+   npm run db:push
+   npm run db:seed
+   ```
+
+4. Iniciar la aplicación:
+
+   ```bash
+   npm run dev
+   ```
+
+   Abrir http://localhost:3000. La artesana ingresa con el correo y la contraseña definidos en `.env`; el cliente se registra desde la pantalla de registro (contraseña de al menos 12 caracteres).
+
+## Verificaciones
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run typecheck
+npm test
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Despliegue en Vercel
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Cargar `DATABASE_URL`, `DIRECT_URL` y `SESSION_SECRET` como variables de entorno del proyecto. El comando de build ejecuta `prisma generate` antes de `next build`. Las tablas se crean una sola vez con `npm run db:push` desde un equipo con el `.env` configurado.

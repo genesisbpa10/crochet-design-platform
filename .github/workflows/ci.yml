@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    env:
+      # Valores ficticios: el build y las pruebas no se conectan a la base de datos.
+      DATABASE_URL: postgresql://usuario:clave@localhost:5432/prueba
+      DIRECT_URL: postgresql://usuario:clave@localhost:5432/prueba
+      SESSION_SECRET: 0123456789abcdef0123456789abcdef0123456789abcdef
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Instalar dependencias
+        run: npm install --no-audit --no-fund
+      - name: Lint
+        run: npm run lint
+      - name: Tipos
+        run: npm run typecheck
+      - name: Pruebas
+        run: npm test
+      - name: Build
+        run: npm run build
