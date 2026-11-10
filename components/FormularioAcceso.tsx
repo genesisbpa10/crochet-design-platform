@@ -19,6 +19,9 @@ export function FormularioLogin() {
         autoComplete="current-password"
         required
       />
+      <p className="aviso">
+        Tras 5 intentos fallidos consecutivos, la cuenta se bloquea durante 15 minutos.
+      </p>
       {estado?.error && (
         <p className="error" role="alert">
           {estado.error}
@@ -47,7 +50,7 @@ export function FormularioRegistro() {
       <input id="nombre" name="nombre" type="text" autoComplete="name" required maxLength={100} />
       <label htmlFor="correo">Correo electrónico</label>
       <input id="correo" name="correo" type="email" autoComplete="email" required />
-      <label htmlFor="contrasena">Contraseña (al menos {MIN_CONTRASENA} caracteres)</label>
+      <label htmlFor="contrasena">Contraseña (mínimo {MIN_CONTRASENA} caracteres)</label>
       <input
         id="contrasena"
         name="contrasena"
@@ -56,6 +59,15 @@ export function FormularioRegistro() {
         required
         minLength={MIN_CONTRASENA}
       />
+      <label htmlFor="repetir">Repetir contraseña</label>
+      <input
+        id="repetir"
+        name="repetir"
+        type="password"
+        autoComplete="new-password"
+        required
+      />
+      <p className="ayuda">No se aceptan contraseñas comunes ni filtradas en incidentes de seguridad.</p>
       {estado?.error && (
         <p className="error" role="alert">
           {estado.error}

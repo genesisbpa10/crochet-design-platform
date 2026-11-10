@@ -13,20 +13,31 @@ import {
 } from "@/lib/auth/password";
 import { cerrarSesion, crearSesion } from "@/lib/auth/session";
 import { rutaInicio } from "@/lib/auth/guard";
+import { esContrasenaProhibida } from "@/lib/auth/contrasenas";
 
-const esquemaRegistro = z.object({
-  nombre: z.string().trim().min(1, "Ingresá tu nombre.").max(100, "El nombre es demasiado largo."),
-  correo: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .email("Ingresá un correo electrónico válido.")
-    .max(254, "El correo es demasiado largo."),
-  contrasena: z
-    .string()
-    .min(MIN_CONTRASENA, `La contraseña debe tener al menos ${MIN_CONTRASENA} caracteres.`)
-    .max(128, "La contraseña es demasiado larga."),
-});
+const esquemaRegistro = z
+  .object({
+    nombre: z.string().trim().min(1, "Ingresá tu nombre.").max(100, "El nombre es demasiado largo."),
+    correo: z
+      .string()
+      .trim()
+      .toLowerCase()
+      .email("Ingresá un correo electrónico válido.")
+      .max(254, "El correo es demasiado largo."),
+    contrasena: z
+      .string()
+      .min(MIN_CONTRASENA, `La contraseña debe tener al menos ${MIN_CONTRASENA} caracteres.`)
+      .max(128, "La contraseña es demasiado larga.")
+      .refine(
+        (valor) => !esContrasenaProhibida(valor),
+        "Esa contraseña es demasiado común o apareció en filtraciones. Elegí otra.",
+      ),
+    repetir: z.string(),
+  })
+  .refine((datos) => datos.contrasena === datos.repetir, {
+    message: "Las contraseñas no coinciden.",
+    path: ["repetir"],
+  });
 
 const esquemaLogin = z.object({
   correo: z.string().trim().toLowerCase().email().max(254),
@@ -43,6 +54,7 @@ export async function registrarCliente(
     nombre: formData.get("nombre"),
     correo: formData.get("correo"),
     contrasena: formData.get("contrasena"),
+    repetir: formData.get("repetir"),
   });
   if (!datos.success) return { error: datos.error.issues[0].message };
 

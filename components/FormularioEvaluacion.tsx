@@ -65,18 +65,24 @@ export function FormularioEvaluacion({ idPropuesta }: { idPropuesta: number }) {
       {conPresupuesto && (
         <section className="tarjeta" aria-label="Presupuesto">
           <h2>Presupuesto</h2>
-          <label htmlFor="monto">Monto en pesos</label>
-          <input
-            id="monto"
-            name="monto"
-            type="number"
-            inputMode="decimal"
-            min="0.01"
-            step="0.01"
-            required
-            style={{ maxWidth: "14rem" }}
-          />
-          <p className="ayuda">El monto lo determina la artesana; el sistema no calcula el precio.</p>
+          <div className="fila">
+            <div className="campo-monto">
+              <span aria-hidden="true">$</span>
+              <input
+                id="monto"
+                name="monto"
+                type="number"
+                inputMode="decimal"
+                min="0.01"
+                step="0.01"
+                required
+                aria-label="Monto en pesos"
+              />
+            </div>
+            <span className="ayuda" style={{ margin: 0 }}>
+              monto en pesos
+            </span>
+          </div>
         </section>
       )}
 
