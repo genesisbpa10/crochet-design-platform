@@ -1,19 +1,55 @@
-# Laboratorio de crochet
+# Plataforma web para diseño computacional y comercialización de prendas de crochet personalizadas
 
-Prototipo del Trabajo Final de Grado (Licenciatura en Informática): plataforma web para diseñar y gestionar propuestas de prendas de crochet personalizadas (tapestry crochet).
+**Prototipo del Trabajo Final de Grado** · Licenciatura en Informática · Universidad Siglo 21
+**Autora:** Génesis Pérez
+
+La aplicación se llama **Laboratorio de crochet**. Permite que un cliente diseñe un motivo de tapestry crochet en una grilla, obtenga al instante los puntos y los metros de hilo, y envíe una propuesta de prenda. La artesana evalúa la factibilidad, registra los ajustes y carga el presupuesto.
+
+Este repositorio contiene el código del prototipo, que implementa aproximadamente el 70 % del sistema descrito en el documento. Las pantallas siguen las Figuras 10 a 17 y el modelo de datos sigue el DER de la Figura 9.
 
 ## Qué incluye
 
-- **Acceso:** registro del cliente e inicio de sesión de cliente y artesana. Contraseñas con Argon2id, sesión firmada y permisos por perfil verificados en el servidor.
-- **Laboratorio de diseño (CU 1 y CU 2):** grilla de 1 a 100 celdas por lado dibujada con Canvas API, paleta de colores, total de puntos, puntos por color y metros de hilo estimados. Guardar y recuperar motivos.
-- **Envío de propuestas (CU 3) y consulta del resultado (CU 4).**
-- **Artesana (CU 5 a CU 8):** listado con filtro por estado, evaluación de factibilidad, ajustes y presupuesto. Estados: Enviada, Evaluada y Presupuestada.
+| Función | Casos de uso / figura |
+| --- | --- |
+| Inicio de sesión de cliente y artesana; registro del cliente | Figuras 10 y 11 |
+| Laboratorio de diseño: grilla de 1 a 100 puntos por lado dibujada con Canvas API, paleta de colores (hasta 16), total de puntos, puntos por color y metros de hilo (0,04 m por punto) | CU 1 y CU 2, Figura 12 |
+| Envío de la propuesta con el motivo elegido y la descripción de la prenda | CU 3, Figura 13 |
+| Consulta del estado y del resultado de las propuestas del cliente | CU 4, Figura 14 |
+| Propuestas recibidas con filtro por estado | CU 6, Figura 15 |
+| Evaluación de factibilidad, ajustes necesarios y presupuesto | CU 5, 7 y 8, Figura 16 |
+| Analítica de pedidos: propuestas por estado, promedios y colores más usados | Figura 17 |
 
-Tecnologías: Next.js, TypeScript, Canvas API, PostgreSQL con Prisma ORM, Vercel.
+Las propuestas pasan por los estados **Enviada → Evaluada → Presupuestada**. La cuenta de la artesana no se registra desde la pantalla: la crea el responsable técnico con el comando `npm run db:seed`.
+
+## Qué queda fuera del prototipo
+
+Para llegar al 70 % se dejaron como trabajo pendiente:
+
+- El **bloqueo de la cuenta tras 5 intentos fallidos** durante 15 minutos. La pantalla de inicio de sesión muestra el aviso de la Figura 10, pero el bloqueo todavía no se aplica.
+- La **expiración de la sesión por inactividad**. En el prototipo la sesión dura 8 horas.
+- La **lista completa de contraseñas filtradas**. El prototipo usa una lista corta de contraseñas comunes.
+- Las **copias de seguridad y los snapshots** descritos en el documento.
+
+## Tecnologías y relación con el documento
+
+| Componente | En el documento | En este prototipo |
+| --- | --- | --- |
+| Aplicación | Next.js, TypeScript, Canvas API | Next.js 16, React 19, TypeScript, Canvas API |
+| Acceso a datos | Prisma ORM | Prisma ORM 6 |
+| Base de datos | PostgreSQL en Amazon RDS | **PostgreSQL administrado en Neon** (ver nota) |
+| Alojamiento | Vercel | Vercel, con despliegue automático desde GitHub |
+| Código fuente | Git y GitHub | Git y GitHub, con verificación automática (GitHub Actions) |
+| Contraseñas | Argon2id con sal | Argon2id con sal |
+
+**Nota sobre la base de datos.** El documento propone Amazon RDS for PostgreSQL para el despliegue final. Para este prototipo se usó **Neon**, un servicio administrado de PostgreSQL con plan gratuito y conexión cifrada con SSL, para no depender de un servicio con costo durante la etapa de demostración. Como la aplicación accede a los datos mediante Prisma ORM y el motor es el mismo (PostgreSQL), pasar a Amazon RDS solo requiere cambiar las variables de entorno `DATABASE_URL` y `DIRECT_URL`; el código y el esquema no se modifican.
+
+También se usan bibliotecas de apoyo que el documento no detalla: `zod` (validación de datos), `jose` (sesión firmada), `@node-rs/argon2` (Argon2id), `vitest` (pruebas) y Tailwind CSS (estilos base).
 
 ## Cómo ejecutarlo en forma local
 
-Requisitos: Node.js 20.9 o superior (se recomienda la versión 22), npm y una base de datos PostgreSQL (por ejemplo, un proyecto gratuito de Neon).
+**Requisitos:** Node.js 20.9 o superior (se recomienda la 22), npm y una base de datos PostgreSQL (por ejemplo, un proyecto gratuito de [Neon](https://neon.tech)).
+
+> En Windows, clonar el repositorio dentro de WSL (por ejemplo, en `~/repos`) y no en una carpeta de OneDrive o de `/mnt/c`, porque en esas rutas `npm` puede fallar con errores de permisos.
 
 1. Instalar las dependencias:
 
@@ -21,7 +57,15 @@ Requisitos: Node.js 20.9 o superior (se recomienda la versión 22), npm y una ba
    npm install
    ```
 
-2. Copiar `.env.example` como `.env` y completar los valores (`DATABASE_URL`, `DIRECT_URL`, `SESSION_SECRET`, `ARTESANA_EMAIL`, `ARTESANA_PASSWORD`).
+2. Copiar `.env.example` como `.env` y completar los valores:
+
+   | Variable | Qué es |
+   | --- | --- |
+   | `DATABASE_URL` | Conexión a la base (con `pooler`, en Neon) |
+   | `DIRECT_URL` | Conexión directa a la base, que Prisma usa para crear las tablas |
+   | `SESSION_SECRET` | Texto aleatorio de al menos 32 caracteres para firmar la sesión |
+   | `ARTESANA_EMAIL` | Correo de la cuenta de la artesana |
+   | `ARTESANA_PASSWORD` | Contraseña de la artesana (al menos 12 caracteres; conviene usar solo letras y números) |
 
 3. Crear las tablas y la cuenta de la artesana:
 
@@ -36,7 +80,17 @@ Requisitos: Node.js 20.9 o superior (se recomienda la versión 22), npm y una ba
    npm run dev
    ```
 
-   Abrir http://localhost:3000. La artesana ingresa con el correo y la contraseña definidos en `.env`; el cliente se registra desde la pantalla de registro (contraseña de al menos 12 caracteres).
+   Abrir http://localhost:3000.
+
+## Cómo probar el flujo completo
+
+1. **Cliente:** en el inicio de sesión tocar *Registrarme* y crear una cuenta (contraseña de al menos 12 caracteres). Se abre el laboratorio de diseño.
+2. En **Diseñar motivo**: pintar la grilla, ponerle un nombre y tocar *Guardar motivo*.
+3. En **Enviar propuesta**: elegir el motivo, escribir la descripción y tocar *Enviar propuesta*.
+4. Tocar el chip **Cliente** (arriba a la derecha) para cerrar la sesión.
+5. **Artesana:** ingresar con `ARTESANA_EMAIL` y `ARTESANA_PASSWORD`. En **Propuestas recibidas** abrir la propuesta con *Ver detalle*, elegir el resultado, cargar ajustes si corresponde, ingresar el monto y tocar *Registrar evaluación*.
+6. En **Analítica de pedidos** se ven los indicadores.
+7. Volver a ingresar como cliente: en **Mis propuestas** se ve el resultado, los ajustes y el presupuesto.
 
 ## Verificaciones
 
@@ -47,6 +101,15 @@ npm test
 npm run build
 ```
 
+Las mismas verificaciones se ejecutan automáticamente en GitHub Actions en cada cambio.
+
 ## Despliegue en Vercel
 
-Cargar `DATABASE_URL`, `DIRECT_URL` y `SESSION_SECRET` como variables de entorno del proyecto. El comando de build ejecuta `prisma generate` antes de `next build`. Las tablas se crean una sola vez con `npm run db:push` desde un equipo con el `.env` configurado.
+1. Importar el repositorio en Vercel.
+2. Cargar `DATABASE_URL`, `DIRECT_URL` y `SESSION_SECRET` como variables de entorno del proyecto.
+3. Cada cambio que se une a la rama `main` se despliega automáticamente. El comando de build ejecuta `prisma generate` antes de `next build`.
+4. Las tablas se crean una sola vez con `npm run db:push` desde un equipo con el `.env` configurado.
+
+## Seguridad
+
+Las credenciales y las claves se configuran como variables de entorno y no se incluyen en el repositorio. Las contraseñas se guardan solo como hash Argon2id, y los permisos de cada perfil se verifican en el servidor.
